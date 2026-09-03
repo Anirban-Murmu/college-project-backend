@@ -12,6 +12,11 @@ DEBUG = False
 # ALLOWED HOSTS
 # ============================================================
 
+render_hostname = config(
+    "RENDER_EXTERNAL_HOSTNAME",
+    default=""
+)
+
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
     cast=lambda value: [
@@ -21,6 +26,9 @@ ALLOWED_HOSTS = config(
     ],
 )
 
+# Render automatically provides RENDER_EXTERNAL_HOSTNAME.
+if render_hostname and render_hostname not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(render_hostname)
 
 # ============================================================
 # CORS
@@ -36,6 +44,10 @@ CORS_ALLOWED_ORIGINS = config(
 )
 
 
+# ============================================================
+# CSRF
+# ============================================================
+
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
     cast=lambda value: [
@@ -44,8 +56,6 @@ CSRF_TRUSTED_ORIGINS = config(
         if origin.strip()
     ],
 )
-
-
 
 
 
