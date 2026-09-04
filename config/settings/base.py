@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -164,15 +165,15 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": config("CLOUDINARY_API_SECRET"),
 }
 
+# here added the cloudinary storage for media files and whitenoise for static files in the middleware and storages section.
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-
 
 # ============================================================
 # STATIC FILES
