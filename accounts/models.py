@@ -30,6 +30,8 @@ class User(AbstractBaseUser):
 
     is_admin = models.BooleanField( default=False )
 
+    is_superuser = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True )
 
     updated_at = models.DateTimeField( auto_now=True)
@@ -49,10 +51,10 @@ class User(AbstractBaseUser):
         return self.email
 
     def has_perm(self, perm, obj=None):
-        return self.is_admin
+        return self.is_admin and self.is_active
 
     def has_module_perms(self, app_label):
-        return True
+        return self.is_admin and self.is_active
 
     @property
     def is_staff(self):
