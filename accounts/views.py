@@ -9,6 +9,8 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
+from accounts.services.email_service import EmailService
+
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
@@ -36,7 +38,8 @@ from .throttles import (
     NormalUserThrottle,
 )
 
-
+from accounts.services import OTPService
+from accounts.services import EmailService
 # ============================================================
 # REGISTER
 # ============================================================
@@ -71,7 +74,19 @@ class RegisterView(APIView):
             raise_exception=True
         )
 
-        serializer.save()
+        user = serializer.save()
+
+        otp_object = OTPService.create_otp(
+            email=user.email,
+            purpose="registration"
+        )
+
+
+        EmailService.send_otp_email(
+            email=user.email,
+            otp=otp_object.otp,
+            purpose="registration"
+        )
 
         return Response(
             {

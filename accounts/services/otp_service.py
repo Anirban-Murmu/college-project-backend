@@ -2,7 +2,8 @@ import secrets
 
 from datetime import timedelta
 
-from django.core.exceptions import ValidationError
+#from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 
 from accounts.models import EmailOTP

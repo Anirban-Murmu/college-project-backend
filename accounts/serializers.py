@@ -132,9 +132,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         validated_data.pop("password2")
 
-        return User.objects.create_user(
-            **validated_data
+        user = User.objects.create_user(
+        **validated_data
         )
+
+        user.is_active = False
+
+        user.save(update_fields=["is_active"])
+        return user
+
+       # return User.objects.create_user(  **validated_data )
 
 
 # ============================================================
