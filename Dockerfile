@@ -41,4 +41,5 @@ USER appuser
 
 EXPOSE 8005
 
-CMD ["gunicorn", "config.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "--workers", "3", "--bind", "0.0.0.0:8005"]
+#CMD ["gunicorn", "config.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "--workers", "3", "--bind", "0.0.0.0:8005"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --workers 1 --bind 0.0.0.0:$PORT"]
